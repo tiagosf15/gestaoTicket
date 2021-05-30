@@ -4,31 +4,33 @@ $oTicketController = new TicketController();
 $titulo = "Início";
 include_once('layout/header.php');
 ?>
+
 <h1 class="text-warning bg-primary w-1">Ticket</h1>
 <header class="border w-10 p-3 bg-body position-relative  top-10 start-0 end-0">
     <nav class="navbar navbar-light bg-light s">
         <div class="container-fluid">
+            <div class="col-md-12 ">
+                <form class="row g-3">
+                    <div class="col-auto">
+                        <label for="dataf" class="">Data fim</label>
+                        <input type="date" class="form-control " id="dataf" value="">
+                    </div>
+                    <div class="col-auto">
+                        <label for="dataI">Data início</label>
+                        <input name="dataI" id="dataI" class="form-control dataI" type="date">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="assunto">Assunto</label>
+                        <input name="assunto" class="form-control" id="assunto" type="search" placeholder="Assunto" aria-label="Search">
+                    </div>
+                    <div class="col-auto ">
+                        <button class="btn btn-outline-success mt-4" type="submit">Pesquisar</button>
+                    </div>
+                </form>
+            </div>
 
-            <form class="d-flex">
-                <div class="col-md-5">
-                    <label class="w-auto" for="dataf">Data fim</label>
-                    <input name="dataf" class="form-control me-2" type="date">
-                </div>
-                &nbsp;&nbsp;
-                <div class="col-md-5">
-                    <label class="text" for="dataI">Data inicio</label>
-                    <input name="dataI" id="dataI" class="form-control me-2" type="date">
-                </div>&nbsp;&nbsp;
 
-                <div class="col-md-5">
-                    <label for="assunto">Assunto</label>
-                    <input name="assunto" class="form-control me-2" type="search" placeholder="Assunto" aria-label="Search">
 
-                </div>&nbsp;&nbsp;
-                <div class="col-md-5">
-                    <button class="btn btn-outline-success" type="submit">Pesquisar</button>
-                </div>
-            </form>
         </div>
     </nav>
 </header>
