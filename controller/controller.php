@@ -9,6 +9,7 @@ class Controller
             $comando = $_REQUEST['comando'];
             if (method_exists($this, $comando)) {
                 $this->$comando();
+
             } 
         }
     }

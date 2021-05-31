@@ -5,6 +5,7 @@ class TicketController  extends Controller
 
     function teste()
     {
-       echo "teste";
+        echo "testeadsadasdasd";
+        die;
     }
 }
