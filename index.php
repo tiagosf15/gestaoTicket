@@ -1,30 +1,40 @@
 <?php
 include_once('controller/ticketController.php');
+include_once('model/Tikets_cadastro.php');
 $oTicketController = new TicketController();
 $titulo = "Início";
-include_once('layout/header.php');
-?>
 
+include_once('layout/header.php');
+
+
+?>
+<script type="text/javascript" src="layout/assets/js/jquery.js"></script>
 <h1 class="text-warning bg-primary w-1">Ticket</h1>
 <header class="border w-10 p-3 bg-body position-relative  top-10 start-0 end-0">
     <nav class="navbar navbar-light bg-light s">
         <div class="container-fluid">
             <div class="col-md-12 ">
-                <form class="row g-3">
+                <form class="row g-3" method="POST" action="">
                     <div class="col-auto">
                         <label for="dataf" class="">Data fim</label>
-                        <input type="date" class="form-control " id="dataf" value="">
+                        <input type="date" class="form-control " id="dataf" name="dataf" value="">
                     </div>
                     <div class="col-auto">
                         <label for="dataI">Data início</label>
                         <input name="dataI" id="dataI" class="form-control dataI" type="date">
                     </div>
+
+                    <div class="col-sm-1">
+                    <label for="codigo">tick codigo</label>
+                    <input name="codigo" id="codigo" type="text" class="form-control">
+                    </div>
+
                     <div class="col-sm-6">
                         <label for="assunto">Assunto</label>
                         <input name="assunto" class="form-control" id="assunto" type="search" placeholder="Assunto" aria-label="Search">
                     </div>
                     <div class="col-auto ">
-                        <button class="btn btn-outline-success mt-4" type="submit">Pesquisar</button>
+                        <button class="btn btn-outline-success mt-4"   name="pesquisar">Pesquisar</button>
                     </div>
                 </form>
             </div>
@@ -34,6 +44,10 @@ include_once('layout/header.php');
         </div>
     </nav>
 </header>
+
+
+
+ 
 </br>
 
 
@@ -43,17 +57,64 @@ include_once('layout/header.php');
 </button>
 </br></br>
 <header class="bg-body w-40">
+
+
+
+<div id="resultado">
+</div>
+
     <?php
-    $i = 10;
-    while ($i <= 100) {
-        echo "resultado</br>";
-        $i++;
-    } ?>
+$tiket_cadastro = new Tikets_cadastro();
+$tiket_cadastro -> pegar();
+
+
+     ?>
+
+
+
 
 
 </header>
 
+<script type="text/javascript">
+
+	function buscarNome(assunto) {
+       
+		$.ajax({
+			url: "buscar.php",
+			method: "POST",
+			data: {'assunto':assunto},
+			success: function(data){
+				$('#resultado').html(data);
+			}
+		});
+        return false;
+	}
+
+	$(document).ready(function(){
+		buscarNome();
+
+		$('#buscar').keyup(function(){
+			var assunto = $(this).val();
+			if (assunto != ''){
+				buscarNome(assunto);
+			}
+			else
+			{
+				buscarNome();
+			}
+		});
+	});
+
+    </script>
+
+
+
+
+
 
 <?php
+
+
 include_once('layout/footer.php');
 ?>
