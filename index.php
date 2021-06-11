@@ -1,11 +1,9 @@
 <?php
 include_once('controller/ticketController.php');
-include_once('model/Tikets_cadastro.php');
 $oTicketController = new TicketController();
+
 $titulo = "Início";
-
 include_once('layout/header.php');
-
 
 ?>
 <script type="text/javascript" src="layout/assets/js/jquery.js"></script>
@@ -15,6 +13,7 @@ include_once('layout/header.php');
         <div class="container-fluid">
             <div class="col-md-12 ">
                 <form class="row g-3" method="POST" action="">
+
                     <div class="col-auto">
                         <label for="dataf" class="">Data fim</label>
                         <input type="date" class="form-control " id="dataf" name="dataf" value="">
@@ -24,18 +23,19 @@ include_once('layout/header.php');
                         <input name="dataI" id="dataI" class="form-control dataI" type="date">
                     </div>
 
-                    <div class="col-sm-1">
-                    <label for="codigo">tick codigo</label>
-                    <input name="codigo" id="codigo" type="text" class="form-control">
+                    <div class="col-auto">
+                        <label for="codigo">tick codigo</label>
+                        <input name="codigo" id="codigo" type="text" id="codigo" class="form-control">
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="assunto">Assunto</label>
-                        <input name="assunto" class="form-control" id="assunto" type="search" placeholder="Assunto" aria-label="Search">
+                        <input name="assunto" class="form-control" id="assunto" type="text" placeholder="Assunto" aria-label="Search">
                     </div>
                     <div class="col-auto ">
-                        <button class="btn btn-outline-success mt-4"   name="pesquisar">Pesquisar</button>
+                        <button class="btn btn-outline-success mt-4" name="pesquisar">Pesquisar</button>
                     </div>
+
                 </form>
             </div>
 
@@ -47,28 +47,41 @@ include_once('layout/header.php');
 
 
 
- 
+
 </br>
 
 
-<button type="button" class="btn btn-light w-20 "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-        <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-    </svg>
+<button type="button" class="btn btn-light w-20 ">
+    <i class="fas fa-plus"></i>
 </button>
+
 </br></br>
 <header class="bg-body w-40">
 
 
 
-<div id="resultado">
-</div>
+    <table id="table" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tema</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Tick Data</th>
+            </tr>
+        </thead>
+        <tbody id="tabela">
+
+        </tbody>
+    </table>
+
 
     <?php
-$tiket_cadastro = new Tikets_cadastro();
-$tiket_cadastro -> pegar();
+
+    //$tiket_cadastro = new Tikets_cadastro();
+    //$tiket_cadastro -> pegar();
 
 
-     ?>
+    ?>
 
 
 
@@ -77,36 +90,51 @@ $tiket_cadastro -> pegar();
 </header>
 
 <script type="text/javascript">
+    function buscarNome(assunto) {
+        $.ajax({
 
-	function buscarNome(assunto) {
-       
-		$.ajax({
-			url: "buscar.php",
-			method: "POST",
-			data: {'assunto':assunto},
-			success: function(data){
-				$('#resultado').html(data);
-			}
-		});
-        return false;
-	}
+            url: "index.php",
+            method: "POST",
+            data: {
+                'comando': 'lsTabala',
+                assunto: assunto
+            },
+            success: function(result) {
+                var t = JSON.parse(result);
 
-	$(document).ready(function(){
-		buscarNome();
+                var tabelaHtml = ""
+                for (var i = 0; i <= t.length - 1; i++) {
 
-		$('#buscar').keyup(function(){
-			var assunto = $(this).val();
-			if (assunto != ''){
-				buscarNome(assunto);
-			}
-			else
-			{
-				buscarNome();
-			}
-		});
-	});
+                    tabelaHtml += " <tr>";
+                    tabelaHtml += "<td>" + t[i].tick_codigoredmine + "</td>";
+                    tabelaHtml += "<td>" + t[i].tick_tema + "</td>";
+                    tabelaHtml += "<td>" + t[i].tick_descricao + "</td>";
+                    tabelaHtml += "<td>" + t[i].data + "</td>";
+                    tabelaHtml += "</tr>";
+                    console.log(t);
+                    // more statements 
+                }
+                $("#tabela").html(tabelaHtml);
 
-    </script>
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        buscarNome();
+
+        $('#assunto').keyup(function() {
+            var assunto = $(this).val();
+            if (assunto != '') {
+                buscarNome(assunto);
+            } else {
+                buscarNome();
+
+            }
+
+        });
+    });
+</script>
 
 
 

@@ -1,11 +1,18 @@
 <?php
+include_once('model/Tikets_cadastro.php');
 require_once('controller.php');
 class TicketController  extends Controller
 {
 
-    function teste()
+    
+
+    function lsTabala()
     {
-        echo "testeadsadasdasd";
-        die;
+   
+    
+       $n = new Tikets_cadastro();
+        
+       echo json_encode($n->pegar());
+       die; 
     }
 }
