@@ -70,3 +70,8 @@ include_once('layout/header.php');
         </div>
     </nav>
 </header>
+<?php
+
+
+include_once('layout/footer.php');
+?>
