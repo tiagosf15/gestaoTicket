@@ -10,6 +10,7 @@ include_once('layout/header.php');
 <script type="text/javascript" src="layout/assets/js/jquery.js"></script>
 <h1 class="text-warning bg-primary w-1">Ticket</h1>
 <header class="border w-10 p-3 bg-body position-relative  top-10 start-0 end-0">
+    
     <nav class="navbar navbar-light bg-light s">
         <div class="container-fluid">
             <div class="col-md-12 ">
@@ -69,9 +70,10 @@ include_once('layout/header.php');
                 <th scope="col">Descrição Dos Tickets</th>
                 <th scope="col">Tick Data</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
-        <tbody id="tabela">
+        <tbody id="tabela" class="">
 
         </tbody>
     </table>
@@ -106,27 +108,39 @@ include_once('layout/header.php');
             success: function(result) {
                 
                 var t =JSON.parse(result);
-                console.log(t);
+                console.log(t[0].data);
                 
                 var tabelaHtml = ""
-                for(var i = 0; i <= t.length - 1; i++) {
+                for(var i = 0; i <= t.length -1; i++) {
                      
                    
                     tabelaHtml += " <tr>";
-                    tabelaHtml += "<td>" + t[i].tick_codigoredmine + "</td>";
+                    tabelaHtml += "<td style='width: 11rem;'>" + t[i].tick_codigoredmine + "</td>";
                     tabelaHtml += "<td>" + t[i].tick_tema + "</td>";
-                    tabelaHtml += "<td>" + t[i].tick_descricao + "</td>";
-                    tabelaHtml += "<td>" + t[i].tick_datacadastro + "</td>";
-                    tabelaHtml += "<td><form method='POST' id='form1' action=''><input type='hidden' id='codigo1' name='codigo1' value="+t[i].tick_codigo+"><a class ='btn btn-danger' onclick='checar()'>deletar</a></form></td>";
+                    tabelaHtml += "<td style='width: 29rem;'><p  text-wrap'>" + t[i].tick_descricao + "</p></td>";
+                    tabelaHtml += "<td>" + t[i].data + "</td>";
+                    tabelaHtml += "<td><a class ='btn btn-danger' onclick='checar("+t[i].tick_codigo+")'>deletar</a></td>";
+                    tabelaHtml += "<td><a class ='btn btn-primary' onclick='enviar("+ t[i].tick_codigo+")'>editar</td>";
                     tabelaHtml += "</tr>";
-                  
+                    
+                
                 }
                 
                 $("#tabela").html(tabelaHtml);
            }
         });
     }
-     function checar(){
+    function enviar(id){
+                    $.ajax({
+                    url:"index.php?comando=procurar",
+                    method: "POST",
+                    data:{'codigo2' : id},
+                    success:function(){             
+                        location.assign("tela_editar.php?tick_codigo="+id);
+                    }
+                    });
+    }
+     function checar(id){
                         Swal.fire({
                         title: 'Tem certeza?',
                         text: "O ticket será apagado para sempre!",
@@ -141,22 +155,24 @@ include_once('layout/header.php');
                             'Deletado!',
                             'O ticket foi deletado!.',
                             'success',
-                            deletar()
+                            deletar(id)
                             
                             )
                         }
                         })
                     }
-    function deletar(){
+    function deletar(id){
                     $.ajax({
                     url:"index.php?comando=Delete",
                     method: "POST",
-                    data:$("#form1").serialize(),
+                    data:{'codigo1' : id},
                     success:function(){             
                         buscarNome();
                     }
                     });
                 }
+    
+    
     $('#form').on('submit', function(e) {
         buscarNome();
         
@@ -171,7 +187,7 @@ include_once('layout/header.php');
     });
   
     
-    $(document).on('loand',function() {
+   /*  $(document).on('loand',function() {
         buscarNome();
         $("#forms").keyup(function() {
             var assunto = $(this).val();
@@ -182,7 +198,7 @@ include_once('layout/header.php');
 
             }
         });
-    });
+    }); */
 </script>
 
 

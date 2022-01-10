@@ -16,43 +16,63 @@ include_once('layout/header.php');
                     <i class="far fa-hand-point-left"></i>
                     Voltar
                 </a>
-                <form class="row g-3" method="POST" id="form" action="">
-
+                <form class="row g-3" method="POST" id="form" name="form" action="">
+                <input name="tick_codigo"  id="tick_codigo" type="hidden">
                     <div class="col-sm-4">
                         <label for="assunto">Assunto</label>
-                        <input name="assunto" class="form-control" id="assunto" type="text" placeholder="Assunto" aria-label="Search">
+                        <input name="tema" class="form-control" id="assunto" type="text" placeholder="Assunto" aria-label="Search">
                     </div>
         
                     <div class="col-auto">
                         <label for="codigo">tick codigoredmine</label>
-                        <input name="codigoredme" id="codigo" type="text" id="codigoredme" class="form-control">
+                        <input name="codigoredme"  type="text" id="codigoredme" class="form-control">
                     </div>
                     <label for="exampleFormControlTextarea1">Descrição</label>
                     <textarea class="form-control" name="descricao" id="descricao" rows="7"></textarea>
             </div>
             <div class="col-auto ">
-                <a class="btn btn-outline-success btn-left mt-4" onclick="cadastrar()" id="salvar" name="salvar">Salvar</a>
+                <a class="btn btn-outline-success btn-left mt-4" onclick="editar()" id="salvar" name="salvar">Salvar</a>
             </div>
             </form>
         </div>
 
         <script type="text/javascript">
-            function cadastrar() {
+            
+            function resultado() {
                 $.ajax({
 
-                    url: "tela_cadastro.php?comando=Cadastrar",
+                    url: "tela_cadastro.php?comando=resultado",
+                    method: "POST",
+                    success: function(resultado) {
+                        var t =JSON.parse(resultado);
+                        console.log(t);
+                        
+                        $("#tick_codigo").val(t[0].tick_codigo);
+                        $("#codigoredme").val(t[0].tick_codigoredmine);
+                        $("#assunto").val(t[0].tick_tema);
+                        $("#descricao").val(t[0].tick_descricao);
+                    }
+
+
+                });
+            }
+            resultado();
+              
+            
+            function editar() {
+                $.ajax({
+
+                    url: "tela_cadastro.php?comando=Editar",
                     method: "POST",
                     data: $("#form").serialize(),
                     success: function() {
                         Swal.fire({
                         icon: 'success',
                         title: 'Sucesso!',
-                        text: 'Ticket Cadastrado com Sucesso!',
+                        text: 'Ticket alterado com Sucesso!',
                         
                         })
-                        $("#codigo").val("");
-                        $("#assunto").val("");
-                        $("#descricao").val("");
+                       
                     }
 
 
