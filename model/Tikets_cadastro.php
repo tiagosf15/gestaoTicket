@@ -18,14 +18,15 @@ class Tikets_cadastro extends Conexao_Tikets
         if (!empty($_POST["assunto"]) || (!empty($_POST["dataI"]) && !empty($_POST["dataf"])) || !empty($_POST["codigo"])) {
             $tikets1 = $_POST["assunto"];
             $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_tema LIKE '%$tikets1%'";
-            if ((!empty($_POST["dataI"]) && !empty($_POST["dataf"])) || !empty($_POST["dataI"])) {
-                $dataI = $_POST["dataI"];
-                $dataf = $_POST["dataf"];
-                $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_datacadastro BETWEEN '$dataI' AND '$dataf'";
-            } elseif (!empty($_POST["codigo"])) {
-                $codigo = $_POST["codigo"];
-                $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM FROM tickts WHERE tick_codigoredmine LIKE '%$codigo%'";
-            }
+           
+        }
+        if (!empty($_POST["dataI"]) && !empty($_POST["dataf"]) ) {
+            $dataI = $_POST["dataI"];
+            $dataf = $_POST["dataf"];
+            $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_datacadastro BETWEEN '$dataI' AND '$dataf'";
+        } if(!empty($_POST["codigo"])) {
+            $codigo = $_POST["codigo"];
+            $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_codigoredmine LIKE '%$codigo%'";
         }
 
 
@@ -37,6 +38,25 @@ class Tikets_cadastro extends Conexao_Tikets
             $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_datacadastro BETWEEN '$dataI' AND '$dataf' AND tick_tema LIKE '%$tikets1%' AND tick_codigoredmine = '$codigo'";
         }
 
+        if (!empty($_POST["dataI"]) && !empty($_POST["dataf"]) && !empty($_POST["codigo"])) {
+            $dataI = $_POST["dataI"];
+            $dataf = $_POST["dataf"];
+            $codigo = $_POST["codigo"];
+            $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_datacadastro BETWEEN '$dataI' AND '$dataf' AND tick_codigoredmine LIKE '%$codigo%'";
+        }
+
+        if (!empty($_POST["assunto"]) && !empty($_POST["dataI"]) && !empty($_POST["dataf"])) {
+            $tikets1 = $_POST["assunto"];
+            $dataI = $_POST["dataI"];
+            $dataf = $_POST["dataf"];
+            $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_datacadastro BETWEEN '$dataI' AND '$dataf' AND tick_tema LIKE '%$tikets1%'";
+        }
+
+        if (!empty($_POST["assunto"]) && !empty($_POST["codigo"])) {
+            $tikets1 = $_POST["assunto"];
+            $codigo = $_POST["codigo"];
+            $tikets = "SELECT *, DATE_FORMAT(tick_datacadastro, '%d/%m/%Y') AS data FROM tickts WHERE tick_tema LIKE '%$tikets1%' AND tick_codigoredmine LIKE '%$codigo%'";
+        }
       
         $statement = $this->db->prepare($tikets);
         $statement->execute(); 

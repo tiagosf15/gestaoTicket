@@ -27,7 +27,7 @@ include_once('layout/header.php');
 
                     <div class="col-auto">
                         <label for="codigo">tick codigoredmine</label>
-                        <input name="codigo" id="codigo" type="text" id="codigo" class="form-control">
+                        <input name="codigo" id="codigo" type="text"  class="form-control">
                     </div>
 
                     <div class="col-sm-4">
@@ -108,6 +108,9 @@ include_once('layout/header.php');
             success: function(result) {
                 
                 var t =JSON.parse(result);
+                if(t == ""){
+                    $("#tabela").html("<tr><td>Ticket Não encontrado<td><tr>");
+                }
                 console.log(t[0].data);
                 
                 var tabelaHtml = ""
